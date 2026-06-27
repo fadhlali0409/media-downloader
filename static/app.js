@@ -2,21 +2,31 @@ async function downloadVideo() {
     const url = document.getElementById("url").value;
     const status = document.getElementById("status");
 
-    status.innerText = "جاري التحميل...";
+    if (!url) {
+        status.innerText = "⚠️ Please enter a URL";
+        return;
+    }
 
-    const res = await fetch("/download", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ url })
-    });
+    status.innerText = "⏳ Downloading...";
 
-    const data = await res.json();
+    try {
+        const response = await fetch("/download", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ url: url })
+        });
 
-    if (data.success) {
-        status.innerHTML = "تم التحميل ✔️: " + data.file;
-    } else {
-        status.innerHTML = "خطأ: " + data.error;
+        const data = await response.json();
+
+        if (data.success) {
+            status.innerHTML = `✅ Download ready: ${data.title}`;
+        } else {
+            status.innerHTML = `❌ Error: ${data.error}`;
+        }
+
+    } catch (err) {
+        status.innerText = "❌ Server error";
     }
 }
