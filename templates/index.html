@@ -2,21 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Media Downloader</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Downloader Pro</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-<div class="container">
-    <h1>📥 Media Downloader</h1>
+<header class="navbar">
 
-    <input type="text" id="url" placeholder="Paste video URL here">
-    <button onclick="downloadVideo()">Download</button>
+    <div class="logo">
+        🎬 Media Downloader Pro
+    </div>
 
-    <p id="status"></p>
+    <nav>
+
+        <a href="#">Home</a>
+        <a href="#">Features</a>
+        <a href="#">Contact</a>
+
+    </nav>
+
+</header>
+
+<section class="hero">
+
+<h1>
+Download Videos From Social Media
+</h1>
+
+<p>
+
+Fast • Secure • Free
+
+</p>
+
+<div class="search-box">
+
+<input
+type="text"
+id="url"
+placeholder="Paste your video link here...">
+
+<button id="downloadBtn">
+
+Download
+
+</button>
+
 </div>
 
-<script src="/static/app.js"></script>
+<div id="result"></div>
+
+</section>
+
+<section class="platforms">
+
+<div>YouTube</div>
+
+<div>TikTok</div>
+
+<div>Instagram</div>
+
+<div>Facebook</div>
+
+<div>X</div>
+
+<div>Snapchat</div>
+
+<div>Pinterest</div>
+
+<div>Reddit</div>
+
+</section>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
 
 </body>
 </html>
