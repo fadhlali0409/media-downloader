@@ -1,56 +1,48 @@
-const button = document.getElementById("downloadBtn");
+let trades = [];
 
-button.addEventListener("click", async () => {
+function addTrade() {
+  const pair = document.getElementById("pair").value;
+  const type = document.getElementById("type").value;
+  const entry = document.getElementById("entry").value;
+  const tp = document.getElementById("tp").value;
+  const sl = document.getElementById("sl").value;
 
-    const url = document.getElementById("url").value.trim();
+  if (!entry || !tp || !sl) {
+    alert("املأ جميع الحقول");
+    return;
+  }
 
-    if (!url) {
-        alert("Paste a video link first.");
-        return;
-    }
+  const trade = {
+    pair,
+    type,
+    entry,
+    tp,
+    sl,
+    time: new Date().toLocaleString()
+  };
 
-    button.innerHTML = "Loading...";
+  trades.push(trade);
+  renderTrades();
+}
 
-    try {
+function renderTrades() {
+  const container = document.getElementById("trades");
+  container.innerHTML = "";
 
-        const response = await fetch("/download", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                url: url
-            })
-        });
+  trades.forEach((t, index) => {
+    container.innerHTML += `
+      <div class="trade">
+        <b>${t.pair} - ${t.type}</b><br>
+        دخول: ${t.entry} <br>
+        TP: ${t.tp} | SL: ${t.sl}<br>
+        🕒 ${t.time}
+        <button onclick="deleteTrade(${index})">حذف</button>
+      </div>
+    `;
+  });
+}
 
-        const data = await response.json();
-
-        if (data.success) {
-
-            document.getElementById("result").innerHTML = `
-                <div style="background:#11233d;padding:25px;border-radius:16px;margin-top:30px;">
-                    <h2>${data.title}</h2>
-                    <br>
-                    <a href="/file/${data.file}">
-                        <button style="padding:15px 30px;background:#1EA7FF;border:none;border-radius:10px;color:white;font-size:16px;cursor:pointer;">
-                            Download Video
-                        </button>
-                    </a>
-                </div>
-            `;
-
-        } else {
-
-            alert(data.error);
-
-        }
-
-    } catch (e) {
-
-        alert("Connection error.");
-
-    }
-
-    button.innerHTML = "Download";
-
-});
+function deleteTrade(index) {
+  trades.splice(index, 1);
+  renderTrades();
+}
